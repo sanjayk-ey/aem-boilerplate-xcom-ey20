@@ -1,6 +1,6 @@
 mountpoints:
   /:
-    url: "https://author-p130360-e1272151.adobeaemcloud.com/bin/franklin.delivery/adobe-rnd/aem-boilerplate-xcom/main"
+    url: "https://author-p153424-e1601770.adobeaemcloud.com/bin/franklin.delivery/sanjayk-ey/aem-boilerplate-xcom-ey20/main"
     type: "markup"
     suffix: ".html"
   

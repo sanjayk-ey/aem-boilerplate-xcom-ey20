@@ -1,8 +1,8 @@
 {
   "public": {
     "default": {
-      "commerce-core-endpoint": "https://www.aemshop.net/graphql",
-      "commerce-endpoint": "https://www.aemshop.net/cs-graphql",
+      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/94JDzMSU8vGUmjdRGr2JkV/graphql",
+      "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/94JDzMSU8vGUmjdRGr2JkV/graphql",
       "commerce-assets-enabled": false,
       "headers": {
         "all": {
@@ -13,17 +13,17 @@
           "Magento-Store-View-Code": "default",
           "Magento-Website-Code": "base",
           "x-api-key": "4dfa19c9fe6f4cccade55cc5b3da94f7",
-          "Magento-Environment-Id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a"
+          "Magento-Environment-Id": "94JDzMSU8vGUmjdRGr2JkV"
         }
       },
       "analytics": {
         "base-currency-code": "USD",
         "environment": "Testing",
-        "environment-id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a",
+        "environment-id": "94JDzMSU8vGUmjdRGr2JkV",
         "store-code": "main_website_store",
         "store-id": 1,
         "store-name": "Main Website Store",
-        "store-url": "https://www.aemshop.net",
+        "store-url": "https://main--aem-boilerplate-xcom-ey20--sanjayk-ey.aem.page/",
         "store-view-code": "default",
         "store-view-id": 1,
         "store-view-name": "Default Store View",
@@ -33,7 +33,7 @@
       },
       "plugins": {
         "picker": {
-           "rootCategory": "YOUR_ROOT_CATEGORY_ID"
+           "rootCategory": "2"
          }
       }
     }
