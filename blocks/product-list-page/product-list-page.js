@@ -17,6 +17,7 @@ import { events } from '@dropins/tools/event-bus.js';
 // AEM
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 // Initializers
 import '../../scripts/initializers/search.js';
@@ -26,6 +27,7 @@ export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
   const config = readBlockConfig(block);
+  const promoTiles = parsePromoTiles(config['promo-tiles']);
 
   const fragment = document.createRange().createContextualFragment(`
     <div class="search__wrapper">
@@ -218,7 +220,99 @@ export default async function decorate(block) {
 
     // Update the URL
     window.history.pushState({}, '', url.toString());
+
+    // Inject authored CMS tiles among product cards (IKEA-style)
+    requestAnimationFrame(() => {
+      injectPromoTiles(block, promoTiles);
+    });
   }, { eager: false });
+}
+
+/**
+ * Parses promo-tiles config entries into { position, path } objects.
+ * Supports multi text values or a single newline/comma-separated string.
+ * Entry format: position|path  (e.g. 3|/fragments/apparel-promo-1)
+ * @param {string|string[]|undefined} raw
+ * @returns {{ position: number, path: string }[]}
+ */
+function parsePromoTiles(raw) {
+  if (!raw) return [];
+
+  const lines = (Array.isArray(raw) ? raw : String(raw).split(/\r?\n|,/))
+    .map((line) => String(line).trim())
+    .filter(Boolean);
+
+  return lines
+    .map((line) => {
+      const separator = line.includes('|') ? '|' : ';';
+      const [positionPart, ...pathParts] = line.split(separator);
+      const position = Number(String(positionPart).trim());
+      let path = pathParts.join(separator).trim();
+
+      if (!Number.isFinite(position) || position < 1 || !path) return null;
+
+      // Normalize authored paths
+      try {
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+          path = new URL(path).pathname;
+        }
+      } catch {
+        // keep original path
+      }
+      path = path.replace(/(\.plain)?\.html$/i, '');
+      if (!path.startsWith('/')) path = `/${path}`;
+
+      return { position, path };
+    })
+    .filter(Boolean);
+}
+
+/**
+ * Inserts CMS fragment tiles into the Live Search product grid.
+ * Re-runs after every search/result (sort/filter/pagination).
+ * @param {Element} block
+ * @param {{ position: number, path: string }[]} tiles
+ */
+async function injectPromoTiles(block, tiles) {
+  const grid = block.querySelector('.product-discovery-product-list__grid');
+  if (!grid) return;
+
+  grid.querySelectorAll('.plp-cms-tile').forEach((el) => el.remove());
+  if (!tiles.length) return;
+
+  // Load in parallel, then insert highest→lowest so indexes stay stable
+  const sorted = [...tiles].sort((a, b) => b.position - a.position);
+  const loaded = await Promise.all(sorted.map(async (tile) => {
+    try {
+      const fragment = await loadFragment(tile.path);
+      if (!fragment) {
+        console.warn(`PLP promo tile not found: ${tile.path}`);
+        return null;
+      }
+      return { tile, fragment };
+    } catch (error) {
+      console.error(`PLP promo tile failed (${tile.path})`, error);
+      return null;
+    }
+  }));
+
+  loaded.filter(Boolean).forEach(({ tile, fragment }) => {
+    const el = document.createElement('div');
+    el.className = 'plp-cms-tile';
+    el.dataset.promoPosition = String(tile.position);
+    el.dataset.promoPath = tile.path;
+
+    const section = fragment.querySelector(':scope .section') || fragment;
+    el.append(...section.childNodes);
+
+    const index = Math.max(tile.position - 1, 0);
+    const ref = grid.children[index];
+    if (ref) {
+      grid.insertBefore(el, ref);
+    } else {
+      grid.appendChild(el);
+    }
+  });
 }
 
 function getSortFromParams(sortParam) {

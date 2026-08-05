@@ -7,7 +7,13 @@ import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js'
 import { events } from '@dropins/tools/event-bus.js';
 import Wishlist from '@dropins/storefront-wishlist/containers/Wishlist.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
-import { commerceEndpointWithQueryParams, rootLink, getProductLink } from '../../scripts/commerce.js';
+import {
+  commerceEndpointWithQueryParams,
+  rootLink,
+  getProductLink,
+  checkIsAuthenticated,
+  CUSTOMER_LOGIN_PATH,
+} from '../../scripts/commerce.js';
 import '../../scripts/initializers/wishlist.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 
@@ -68,7 +74,20 @@ events.on('wishlist/alert', () => {
   }, 0);
 });
 
+function redirectGuestToLogin() {
+  const returnPath = `${window.location.pathname}${window.location.search}` || rootLink('/wishlist');
+  const loginUrl = new URL(rootLink(CUSTOMER_LOGIN_PATH), window.location.origin);
+  loginUrl.searchParams.set('redirect', returnPath);
+  window.location.href = loginUrl.href;
+}
+
 export default async function decorate(block) {
+  // Wishlist is for logged-in customers only
+  if (!checkIsAuthenticated()) {
+    redirectGuestToLogin();
+    return;
+  }
+
   const {
     'start-shopping-url': startShoppingURL = '',
   } = readBlockConfig(block);

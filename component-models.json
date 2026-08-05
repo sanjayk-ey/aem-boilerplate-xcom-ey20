@@ -261,6 +261,12 @@
         "description": "Enable the ability to undo the removal of an item from the cart"
       },
       {
+        "component": "boolean",
+        "name": "enable-save-for-later",
+        "label": "Enable Save for Later",
+        "description": "Show Microsoft-style Save for later on cart line items and a Saved for later section on the cart page"
+      },
+      {
         "component": "number",
         "name": "max-items",
         "label": "Max Items",
@@ -430,6 +436,14 @@
         "label": "URL Path",
         "valueType": "string",
         "description": "Current Category URL Path"
+      },
+      {
+        "component": "text",
+        "name": "promo-tiles",
+        "label": "Promo Tiles",
+        "valueType": "string",
+        "multi": true,
+        "description": "CMS tiles inside the product grid. One entry per tile as position|path (e.g. 3|/fragments/apparel-promo-1)"
       }
     ]
   },

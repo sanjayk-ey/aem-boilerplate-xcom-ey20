@@ -16,6 +16,7 @@ await initializeDropin(async () => {
 
   return initializers.mountImmediately(initialize, {
     langDefinitions,
-    isGuestWishlistEnabled: true,
+    // Wishlist / Save for later is for logged-in customers only
+    isGuestWishlistEnabled: false,
   });
 })();

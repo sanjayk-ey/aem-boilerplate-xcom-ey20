@@ -28,6 +28,14 @@
           "label": "URL Path",
           "valueType": "string",
           "description": "Current Category URL Path"
+        },
+        {
+          "component": "text",
+          "name": "promo-tiles",
+          "label": "Promo Tiles",
+          "valueType": "string",
+          "multi": true,
+          "description": "CMS tiles inside the product grid. One entry per tile as position|path (e.g. 3|/fragments/apparel-promo-1)"
         }
       ]
     }

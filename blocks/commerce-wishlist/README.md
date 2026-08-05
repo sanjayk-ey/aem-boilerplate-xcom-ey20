@@ -35,14 +35,14 @@ No events are emitted by this block. -->
 ### Page Context Detection
 
 - **Authenticated Users**: When user is authenticated, provides full wishlist management functionality
-- **Unauthenticated Users**: When user is not authenticated, provides full wishlist functionality and the possibility to sign-in.
-- **Empty Wishlist**: When wishlist has no items, shows empty wishlist message with Start Shopping CTA and sign-in link for unauthenticated users.
+- **Unauthenticated Users**: Redirected to login with `?redirect=` back to the wishlist page (guest wishlist is disabled project-wide)
+- **Empty Wishlist**: When wishlist has no items, shows empty wishlist message with Start Shopping CTA
 
 ### User Interaction Flows
 
-1. **Initialization**: Block initializes wishlist renderer and sets up product data API endpoints
-2. **Wishlist Display**: Renders wishlist items with product images and management options
-3. **Authentication Flow**: When unauthenticated users sign-in, guest wishlist is preserved and merged with authenticated user wishlist
+1. **Auth gate**: Guests are redirected to login before the wishlist page renders
+2. **Initialization**: Block initializes wishlist renderer and sets up product data API endpoints
+3. **Wishlist Display**: Renders wishlist items with product images and management options
 4. **Product Management**: Users can add/remove products from wishlist and move items to cart
 5. **Product Navigation**: Users can navigate to product detail pages
 6. **Alert Handling**: Shows wishlist action alerts and scrolls to top of page

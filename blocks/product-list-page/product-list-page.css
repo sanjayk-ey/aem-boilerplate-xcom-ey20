@@ -81,6 +81,36 @@
     gap: var(--spacing-xxsmall);
 }
 
+/* CMS promo tiles injected among product cards */
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile {
+    width: 100%;
+    margin: unset;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xsmall);
+    min-width: 0;
+}
+
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}
+
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile h1,
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile h2,
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile h3,
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile h4,
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile p {
+    margin: 0;
+}
+
+.block.product-list-page .product-discovery-product-list__grid .plp-cms-tile .button-container {
+    margin: 0;
+}
+
 /* Empty State */
 
 .block.product-list-page.product-list-page--empty .search__wrapper {

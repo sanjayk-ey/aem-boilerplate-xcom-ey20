@@ -4,7 +4,13 @@ import { events } from '@dropins/tools/event-bus.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
+import {
+  fetchPlaceholders,
+  getProductLink,
+  rootLink,
+  checkIsAuthenticated,
+  CUSTOMER_LOGIN_PATH,
+} from '../../scripts/commerce.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
@@ -226,6 +232,13 @@ export default async function decorate(block) {
   const wishlistPath = wishlistMeta ? new URL(wishlistMeta, window.location).pathname : '/wishlist';
 
   wishlistButton.addEventListener('click', () => {
+    // Wishlist is for logged-in customers only — guests go to login, then back to wishlist
+    if (!checkIsAuthenticated()) {
+      const loginUrl = new URL(rootLink(CUSTOMER_LOGIN_PATH), window.location.origin);
+      loginUrl.searchParams.set('redirect', rootLink(wishlistPath));
+      window.location.href = loginUrl.href;
+      return;
+    }
     window.location.href = rootLink(wishlistPath);
   });
 

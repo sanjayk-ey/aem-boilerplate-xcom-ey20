@@ -10,13 +10,33 @@ import {
 // Initialize
 import '../../scripts/initializers/auth.js';
 
+/**
+ * Allows safe same-site relative redirects after sign-in (e.g. back to cart).
+ * Query param: ?redirect=/cart
+ * @returns {string}
+ */
+function getPostSignInRedirect() {
+  const redirect = new URLSearchParams(window.location.search).get('redirect');
+  if (
+    redirect
+    && redirect.startsWith('/')
+    && !redirect.startsWith('//')
+    && !redirect.includes('://')
+  ) {
+    return redirect;
+  }
+  return rootLink(CUSTOMER_ACCOUNT_PATH);
+}
+
 export default async function decorate(block) {
+  const postSignInRedirect = getPostSignInRedirect();
+
   if (checkIsAuthenticated()) {
-    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
+    window.location.href = postSignInRedirect;
   } else {
     await authRenderer.render(SignIn, {
       routeForgotPassword: () => rootLink(CUSTOMER_FORGOTPASSWORD_PATH),
-      routeRedirectOnSignIn: () => rootLink(CUSTOMER_ACCOUNT_PATH),
+      routeRedirectOnSignIn: () => postSignInRedirect,
     })(block);
   }
 }
