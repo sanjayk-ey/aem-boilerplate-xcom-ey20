@@ -27,6 +27,7 @@ import {
 const experimentationConfig = {
   prodHost: 'main--aem-boilerplate-xcom-ey20--sanjayk-ey.aem.live',
   audiences: {},
+  simulationUI: 'universal-editor',
 };
 
 /**
