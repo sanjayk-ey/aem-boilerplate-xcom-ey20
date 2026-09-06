@@ -116,9 +116,10 @@ function migrateLegacyTokenScopedItems(token, email) {
   const orphanKeys = [];
   for (let i = 0; i < localStorage.length; i += 1) {
     const key = localStorage.key(i);
-    if (!key || !key.startsWith(`${STORAGE_PREFIX}:`)) continue;
-    if (key === EMAIL_CACHE_KEY || key === emailKey) continue;
-    orphanKeys.push(key);
+    if (key && key.startsWith(`${STORAGE_PREFIX}:`)
+      && key !== EMAIL_CACHE_KEY && key !== emailKey) {
+      orphanKeys.push(key);
+    }
   }
 
   let emailListEmpty = true;
@@ -242,7 +243,7 @@ function persist(items) {
 
 /**
  * Builds a stable id for a cart line / saved item.
- * @param {{ sku?: string, topLevelSku?: string, selectedOptionsUIDs?: object|string[], selectedOptions?: object|Array }} item
+ * @param {object} item Cart line or saved item.
  */
 export function buildSavedItemId(item) {
   const options = extractOptionsUIDs(item).slice().sort().join('|');
