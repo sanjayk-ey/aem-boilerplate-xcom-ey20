@@ -19,6 +19,15 @@ import {
   decorateLinks,
   loadErrorPage,
 } from './commerce.js';
+import {
+  runExperimentation,
+  runExperimentationLazy,
+} from './experiment-loader.js';
+
+const experimentationConfig = {
+  prodHost: 'main--aem-boilerplate-xcom-ey20--sanjayk-ey.aem.live',
+  audiences: {},
+};
 
 /**
  * Moves all the attributes from a given elmenet to another given element.
@@ -99,6 +108,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  await runExperimentation(doc, experimentationConfig);
 
   const main = doc.querySelector('main');
   if (main) {
@@ -132,6 +142,7 @@ async function loadEager(doc) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadSections(main);
+  await runExperimentationLazy(doc, experimentationConfig);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
