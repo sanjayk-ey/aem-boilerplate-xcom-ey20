@@ -182,7 +182,10 @@ test.describe('Page-level experiments', () => {
   test('supports overriding the shown experiment and variant via query parameters.', async ({ page }) => {
     await goToAndRunExperiment(page, '/tests/fixtures/experiments/page-level?experiment=foo/challenger-2&experiment=bar/challenger-1');
     expect(await page.locator('main').textContent()).toEqual('Hello v2!');
-    await goToAndRunExperiment(page, '/tests/fixtures/experiments/page-level?experiment=foo&experiment-variant=challenger-1');
+    await goToAndRunExperiment(
+      page,
+      '/tests/fixtures/experiments/page-level?experiment=foo&experiment-variant=challenger-1',
+    );
     expect(await page.locator('main').textContent()).toEqual('Hello v1!');
     await goToAndRunExperiment(page, '/tests/fixtures/experiments/page-level--audiences?experiment=foo&experiment-variant=challenger-2&audience=bar');
     expect(await page.locator('main').textContent()).toEqual('Hello v2!');

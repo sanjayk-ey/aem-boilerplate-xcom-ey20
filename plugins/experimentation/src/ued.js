@@ -69,10 +69,9 @@ function pickWithWeightsBucket(allocationPercentages, treatments, bucket) {
   var partialSum = 0.0;
   for (var i = 0; i < treatments.length; i++) {
       partialSum += Number(allocationPercentages[i].toFixed(2)) / sum;
-      if (bucket > partialSum) {
-          continue;
+      if (bucket <= partialSum) {
+        return treatments[i];
       }
-      return treatments[i];
   }
 }
 function assignTreatmentByVisitor(experimentid, identityId, allocationPercentages, treatments) {
