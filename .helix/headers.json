@@ -1,4 +1,16 @@
 {
+  "/paths.json": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ],
+  "/fstab.yaml": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ],
   "/component-models.json": [
     {
       "key": "access-control-allow-origin",
