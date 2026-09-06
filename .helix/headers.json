@@ -1,0 +1,32 @@
+{
+  "/component-models.json": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ],
+  "/component-definition.json": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ],
+  "/component-filters.json": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ],
+  "/models/**": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ],
+  "/blocks/**": [
+    {
+      "key": "access-control-allow-origin",
+      "value": "https://experience.adobe.com"
+    }
+  ]
+}
