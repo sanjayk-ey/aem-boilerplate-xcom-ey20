@@ -10,9 +10,10 @@ import {
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
 import { decorateMain } from './scripts.js';
+import { isAemAuthorEnvironment } from './commerce.js';
 
 window.xwalk = window.xwalk || {};
-window.xwalk.isAuthorEnv = true;
+window.xwalk.isAuthorEnv = isAemAuthorEnvironment();
 window.xwalk.previewSku = 'ADB150';
 
 // set the filter for an UE editable

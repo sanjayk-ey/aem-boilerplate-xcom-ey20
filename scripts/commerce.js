@@ -282,6 +282,34 @@ export async function initializeCommerce() {
 }
 
 /**
+ * True only on AEM author / Universal Editor content URLs.
+ * Local `aem up`, EDS preview, and live sites must stay extensionless.
+ * @returns {boolean}
+ */
+export function isAemAuthorEnvironment() {
+  const { hostname, pathname } = window.location;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') return false;
+  if (/\.(aem|hlx)\.(page|live)$/i.test(hostname)) return false;
+  return pathname.startsWith('/content/') || /(?:^|\.)author[-.]/i.test(hostname);
+}
+
+/**
+ * Inserts `.html` before the query string and hash. Used only on AEM author.
+ * @param {string} link
+ * @returns {string}
+ */
+function appendHtmlExtension(link) {
+  const hashIndex = link.indexOf('#');
+  const hash = hashIndex >= 0 ? link.slice(hashIndex) : '';
+  const withoutHash = hashIndex >= 0 ? link.slice(0, hashIndex) : link;
+  const queryIndex = withoutHash.indexOf('?');
+  const query = queryIndex >= 0 ? withoutHash.slice(queryIndex) : '';
+  const path = queryIndex >= 0 ? withoutHash.slice(0, queryIndex) : withoutHash;
+  if (!path || path.endsWith('/') || path.endsWith('.html')) return link;
+  return `${path}.html${query}${hash}`;
+}
+
+/**
  * Decorates links.
  * @param {string} [link] url to be localized
  * @returns {string} - The localized link
@@ -299,8 +327,10 @@ export function rootLink(link) {
   }
   // append the site path to link
   link = link.startsWith(aemContentRoot) ? link : `${aemContentRoot}${link}`;
-  // append the .html extension to link if we are in the author environment
-  link = window.xwalk?.isAuthorEnv && !link.endsWith('.html') ? `${link}.html` : link;
+  // AEM author needs .html; localhost / EDS publish URLs 404 with that suffix
+  if (isAemAuthorEnvironment()) {
+    link = appendHtmlExtension(link);
+  }
   /* eslint-enable no-param-reassign */
   // If the link is already localized, do nothing
   if (link.startsWith(root)) return link;
@@ -411,7 +441,7 @@ export async function fetchPlaceholders(path) {
         return window.placeholders._pending[resourceCacheKey];
       }
 
-      // Create new fetch promise¨
+      // Create new fetch promise?
       // XWALK: no sheet parameter
       const resourceFetchPromise = fetch(`${url}`).then(async (response) => {
         if (response.ok) {

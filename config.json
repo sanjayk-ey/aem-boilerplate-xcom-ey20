@@ -3,6 +3,7 @@
     "default": {
       "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/94JDzMSU8vGUmjdRGr2JkV/graphql",
       "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/94JDzMSU8vGUmjdRGr2JkV/graphql",
+      "purchase-front-door-endpoint": "/purchasefrontdoor",
       "commerce-assets-enabled": false,
       "headers": {
         "all": {

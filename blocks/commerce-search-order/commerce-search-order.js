@@ -4,6 +4,7 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { events } from '@dropins/tools/event-bus.js';
 import {
+  CUSTOMER_FORGOTPASSWORD_PATH,
   CUSTOMER_ORDER_DETAILS_PATH,
   ORDER_DETAILS_PATH,
   checkIsAuthenticated,
@@ -23,7 +24,7 @@ const renderSignIn = async (element, email, orderNumber) => authRenderer.render(
       : 'Sign in to view order details',
     primaryButtonText: 'View order',
   },
-  routeForgotPassword: () => 'reset-password.html',
+  routeForgotPassword: () => rootLink(CUSTOMER_FORGOTPASSWORD_PATH),
   routeRedirectOnSignIn: () => rootLink(`${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`),
 })(element);
 
