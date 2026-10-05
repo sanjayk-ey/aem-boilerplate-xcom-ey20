@@ -11,7 +11,7 @@ import * as orderApi from '@dropins/storefront-order/api.js';
 // Checkout Dropin Libraries
 import {
   createScopedSelector,
-  getCartAddress,
+  // getCartAddress,
   isEmptyCart,
   isVirtualCart,
   scrollToElement,
@@ -86,12 +86,13 @@ import {
   rootLink,
   SUPPORT_PATH,
 } from '../../scripts/commerce.js';
-import {
-  authorizePurchase,
-  createPurchaseUnauthorizedError,
-  getPaymentCardToken,
-  isPurchaseAuthorized,
-} from '../../scripts/purchase-front-door.js';
+// Purchase front door POST /purchasefrontdoor returns 405 on AEM and blocks place order.
+// import {
+//   authorizePurchase,
+//   createPurchaseUnauthorizedError,
+//   getPaymentCardToken,
+//   isPurchaseAuthorized,
+// } from '../../scripts/purchase-front-door.js';
 
 // Initializers
 import '../../scripts/initializers/account.js';
@@ -198,19 +199,20 @@ export default async function decorate(block) {
         await creditCardFormRef.current.submit();
       }
 
-      const checkoutData = events.lastPayload('checkout/updated')
-        || events.lastPayload('checkout/initialized');
-      const customerAddress = getCartAddress(checkoutData, 'billing')
-        || getCartAddress(checkoutData, 'shipping');
-
-      const authorization = await authorizePurchase({
-        address: customerAddress,
-        paymentCardToken: getPaymentCardToken(cartId, code),
-      });
-
-      if (!isPurchaseAuthorized(authorization)) {
-        throw createPurchaseUnauthorizedError();
-      }
+      // POST /purchasefrontdoor returns 405 and stops the order. Skip that check.
+      // const checkoutData = events.lastPayload('checkout/updated')
+      //   || events.lastPayload('checkout/initialized');
+      // const customerAddress = getCartAddress(checkoutData, 'billing')
+      //   || getCartAddress(checkoutData, 'shipping');
+      //
+      // const authorization = await authorizePurchase({
+      //   address: customerAddress,
+      //   paymentCardToken: getPaymentCardToken(cartId, code),
+      // });
+      //
+      // if (!isPurchaseAuthorized(authorization)) {
+      //   throw createPurchaseUnauthorizedError();
+      // }
 
       // Place order
       await orderApi.placeOrder(cartId);
