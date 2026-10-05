@@ -67,6 +67,46 @@
   display: contents;
 }
 
+.product-details__buttons__add-to-wishlist .wishlist-icon__fallback,
+.product-details__buttons__add-to-wishlist .wishlist-icon__toggle {
+  align-self: center;
+  justify-self: end;
+}
+
+.product-details__buttons__add-to-wishlist .wishlist-icon__fallback,
+.product-details__buttons__add-to-wishlist .wishlist-icon__toggle .dropin-iconButton,
+.product-details__buttons__add-to-wishlist .wishlist-icon__toggle .dropin-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-neutral-800);
+  cursor: pointer;
+}
+
+.product-details__buttons__add-to-wishlist .wishlist-icon__glyph,
+.product-details__buttons__add-to-wishlist .wishlist-icon__toggle svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  overflow: visible;
+}
+
+.product-details__buttons__add-to-wishlist .wishlist-icon__glyph {
+  background: url('../../icons/heart.svg') center / contain no-repeat;
+}
+
+.product-details__buttons__add-to-wishlist.wishlist-icon:has([data-testid="wishlist-toggle"]) > .wishlist-icon__fallback,
+.product-details__buttons__add-to-wishlist .wishlist-icon__toggle:not(:has([data-testid="wishlist-toggle"])) {
+  display: none;
+}
+
 .product-details__attributes {
   margin-top: var(--spacing-xsmall);
 }

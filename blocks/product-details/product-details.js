@@ -11,7 +11,6 @@ import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 
-import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 
 // Containers
@@ -32,6 +31,7 @@ import {
   fetchPlaceholders,
   getProductLink,
 } from '../../scripts/commerce.js';
+import { mountWishlistIcon } from '../../scripts/wishlist-icon.js';
 
 // Initializers
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
@@ -219,10 +219,12 @@ export default async function decorate(block) {
     // Attributes
     pdpRendered.render(ProductAttributes, {})($attributes),
 
-    // Wishlist button - WishlistToggle Container
-    wishlistRender.render(WishlistToggle, {
-      product,
-    })($wishlistToggleBtn),
+    // Wishlist heart — guests see the icon and are sent to login
+    mountWishlistIcon(
+      $wishlistToggleBtn,
+      { product },
+      product?.name ? `Add ${product.name} to wishlist` : 'Add to wishlist',
+    ),
   ]);
 
   // Configuration – Button - Add to Cart

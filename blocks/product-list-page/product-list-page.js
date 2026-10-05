@@ -6,9 +6,6 @@ import Pagination from '@dropins/storefront-product-discovery/containers/Paginat
 import { render as provider } from '@dropins/storefront-product-discovery/render.js';
 import { Button, Icon, provider as UI } from '@dropins/tools/components.js';
 import { search } from '@dropins/storefront-product-discovery/api.js';
-// Wishlist Dropin
-import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
-import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
@@ -17,6 +14,7 @@ import { events } from '@dropins/tools/event-bus.js';
 // AEM
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
+import { mountWishlistIcon } from '../../scripts/wishlist-icon.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // Initializers
@@ -166,10 +164,13 @@ export default async function decorate(block) {
           // Wishlist Button
           const $wishlistToggle = document.createElement('div');
           $wishlistToggle.classList.add('product-discovery-product-actions__wishlist-toggle');
-          wishlistRender.render(WishlistToggle, {
+          const productName = ctx.product?.name
+            ? `Add ${ctx.product.name} to wishlist`
+            : 'Add to wishlist';
+          mountWishlistIcon($wishlistToggle, {
             product: ctx.product,
             variant: 'tertiary',
-          })($wishlistToggle);
+          }, productName);
           actionsWrapper.appendChild(addToCartBtn);
           actionsWrapper.appendChild($wishlistToggle);
           ctx.replaceWith(actionsWrapper);

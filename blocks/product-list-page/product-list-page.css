@@ -78,7 +78,51 @@
 .block.product-list-page .product-discovery-product-actions {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: var(--spacing-xxsmall);
+}
+
+.block.product-list-page .product-discovery-product-actions__add-to-cart {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle {
+    flex: 0 0 auto;
+}
+
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__fallback,
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__toggle .dropin-iconButton,
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__toggle .dropin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-neutral-800);
+    cursor: pointer;
+}
+
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__glyph,
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__toggle svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+    overflow: visible;
+}
+
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__glyph {
+    background: url('../../icons/heart.svg') center / contain no-repeat;
+}
+
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle.wishlist-icon:has([data-testid="wishlist-toggle"]) > .wishlist-icon__fallback,
+.block.product-list-page .product-discovery-product-actions__wishlist-toggle .wishlist-icon__toggle:not(:has([data-testid="wishlist-toggle"])) {
+    display: none;
 }
 
 /* CMS promo tiles injected among product cards */
