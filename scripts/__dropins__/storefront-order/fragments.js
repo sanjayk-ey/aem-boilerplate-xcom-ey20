@@ -339,9 +339,6 @@ ${R}`, c = `fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
   items {
     ...ORDER_ITEM_FRAGMENT
   }
-  total {
-    ...ORDER_SUMMARY_FRAGMENT
-  }
 }
 ${_}
 ${u}
@@ -351,7 +348,6 @@ ${o}
 ${A}
 ${a}
 ${i}
-${c}
 ${t}
 ${r}
 ${T}`, d = `fragment PLACE_ORDER_FRAGMENT on PlaceOrderOutput {

@@ -8,7 +8,7 @@ import{c as at,r as ot}from"./chunks/requestGuestOrderCancel.js";import{s as v,f
   }
 
   ${R}
-`,P=async()=>{const e=await D();e&&v("X-ReCaptcha",e)},W=async e=>{if(!e)throw new Error("No cart ID found");return await P(),E(k,{method:"POST",variables:{cartId:e}}).then(r=>{var a,o,n,c,u;(a=r.errors)!=null&&a.length&&O(r.errors),(c=(n=(o=r.data)==null?void 0:o.placeOrder)==null?void 0:n.errors)!=null&&c.length&&b((u=r.data.placeOrder)==null?void 0:u.errors);const t=y(r);return t&&(l.emit("order/placed",t),l.emit("cart/reset",void 0),T(e,t)),t}).catch(h)},F=`
+`,P=async()=>{const e=await D();e&&v("X-ReCaptcha",e)},W=async e=>{if(!e)throw new Error("No cart ID found");return await P(),E(k,{method:"POST",variables:{cartId:e}}).then(r=>{var a,o,n,c,u;const t=y(r);if(t)return l.emit("order/placed",t),l.emit("cart/reset",void 0),(()=>{try{T(e,t)}catch{}})(),t;(a=r.errors)!=null&&a.length&&O(r.errors),(c=(n=(o=r.data)==null?void 0:o.placeOrder)==null?void 0:n.errors)!=null&&c.length&&b((u=r.data.placeOrder)==null?void 0:u.errors);return t}).catch(h)},F=`
   mutation setPaymentMethodAndPlaceOrder($cartId: String!, $paymentMethod: PaymentMethodInput!) {
     setPaymentMethodOnCart(
       input: {
