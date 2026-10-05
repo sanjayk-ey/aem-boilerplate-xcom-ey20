@@ -218,7 +218,13 @@ export default async function decorate(block) {
       await orderApi.placeOrder(cartId);
     } catch (error) {
       console.error(error);
-      throw error;
+      // Checkout only shows Magento's message when this is a PlaceOrderError.
+      // GraphQL failures are a plain Error and become the generic "unexpected" copy.
+      const placeOrderError = new Error(
+        error?.message || 'An unexpected error occurred while processing your order.',
+      );
+      placeOrderError.name = 'PlaceOrderError';
+      throw placeOrderError;
     } finally {
       removeOverlaySpinner(loaderRef, $loader);
     }
